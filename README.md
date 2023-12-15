@@ -15,7 +15,7 @@ torchvision=0.14.1
 
 
 #### Training fine-tuned VGG-16 model on CUB-200
-```
+```bash
 python train.py --root <path to unzipped CUB-200>
 ```
 
@@ -23,7 +23,7 @@ python train.py --root <path to unzipped CUB-200>
 Takes roughly 70 hours to run on a single T4 GPU on Google Cloud VM.
 Requires the ImageNet validation dataset to be placed in '../ILSVRC2012'.
 
-```
+```bash
 python grad_sign_perturbation.py
 ```
 
@@ -38,11 +38,11 @@ Use the [comparison_max_mean.ipynb](comparison_max_mean.ipynb) notebook. Require
 python experiment.py --root <path to unzipped CUB-200> -thre 0.1 -model vgg -exp <GC / LA / XC> --test_all
 ```
 #### Figure 5
-The images are generated using the code in `gradcam_vit.ipynb` (a) and `rollout_vit.ipynb` (b) respectively. 
+The images are generated using the code in [gradcam_vit.ipynb](gradcam_vit.ipynb) (a) and [rollout_vit.ipynb](rollout_vit.ipynb) (b) respectively. 
 
 For both files you need to have downloaded the Mini-Imagenet dataset from Kaggle: https://www.kaggle.com/datasets/deeptrial/miniimagenet/data
 
-To run `gradcam_vit.ipynb` you need to install `pytorch_grad_cam` using:
+To run [gradcam_vit.ipynb](gradcam_vit.ipynb) you need to install `pytorch_grad_cam` using:
 
 ```bash
 pip install pytorch-gradcam
