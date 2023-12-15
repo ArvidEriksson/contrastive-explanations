@@ -15,7 +15,7 @@ torchvision=0.14.1
 
 
 #### Training fine-tuned VGG-16 model on CUB-200
-```bash
+```
 python train.py --root <path to unzipped CUB-200>
 ```
 
