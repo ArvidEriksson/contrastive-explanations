@@ -37,6 +37,23 @@ Use the [comparison_max_mean.ipynb](comparison_max_mean.ipynb) notebook. Require
 ```
 python experiment.py --root <path to unzipped CUB-200> -thre 0.1 -model vgg -exp <GC / LA / XC> --test_all
 ```
+#### Figure 5
+The images are generated using the code in `gradcam_vit.ipynb` (a) and `rollout_vit.ipynb` (b) respectively. 
+
+For both files you need to have downloaded the Mini-Imagenet dataset from Kaggle: https://www.kaggle.com/datasets/deeptrial/miniimagenet/data
+
+To run `gradcam_vit.ipynb` you need to install `pytorch_grad_cam` using:
+
+```bash
+pip install pytorch-gradcam
+``` 
+
+To run `rollout_vit.ipynb` you need to clone `vit-explain` to your directory:
+
+```bash
+git clone https://github.com/jacobgil/vit-explain.git
+```
+
 
 #### Figure 6
 Use the [logit_explanation_relation.ipynb](logit_explanation_relation.ipynb) notebook. Requires the ImageNet validation dataset to be placed in '../ILSVRC2012'.
