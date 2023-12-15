@@ -19,6 +19,14 @@ torchvision=0.14.1
 python train.py --root <path to unzipped CUB-200>
 ```
 
+#### Figure 1 and 2
+```
+python grad_sign_perturbation.py
+
+```
+
+Takes roughly 70 hours to run on a single T4 GPU on Google Cloud VM.
+
 #### Figure 3
 Use the [visualizations.ipynb](visualizations.ipynb) notebook. Requires model fine-tuned on CUB-200.
 

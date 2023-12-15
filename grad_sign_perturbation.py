@@ -28,12 +28,29 @@ val_dataset = datasets.ImageNet(root=data_dir, split='val', transform=data_trans
 BATCH_SIZE = 64
 
 dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=True)
-#dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
 dataset_sizes = len(val_dataset)
 class_names = val_dataset.classes
 
+available_models = {
+    'resnet18' : torchvision.models.resnet18,
+    'alexnet' : torchvision.models.alexnet,
+    'googlenet' : torchvision.models.googlenet,
+    'mobilenet_v3_small' : torchvision.models.mobilenet_v3_small,
+    'mobilenet_v3_large' : torchvision.models.mobilenet_v3_large,
+    'mnasnet1_0' : torchvision.models.mnasnet1_0,
+    'vgg16' : torchvision.models.vgg16,
+    'efficientnet_b1' : torchvision.models.efficientnet_b1,
+    'densenet161' : torchvision.models.densenet161
+}
+
 def get_model(model_type):
-    model = torch.hub.load('pytorch/vision:v0.10.0', model_type, pretrained=True).to(device)
+
+    # Check if the specified model name is valid
+    if model_type not in available_models:
+        raise ValueError(f"Invalid model name. Available models: {list(available_models.keys())}")
+    # Load the model with pre-trained weights
+    model = available_models[model_type](weights="DEFAULT").to(device)
+
     return model
 
 def evaluate_model(model, images_no_norm, labels):
@@ -76,23 +93,14 @@ def get_explanation(model, inputs_no_norm, targets, explanation_mode):
         correct_classifications = preds[:, 0] == targets
         wrong_classifications = preds[:, 0] != targets
         max_index_not_target = correct_classifications * preds[:, 1] + wrong_classifications * preds[:, 0]
-        #loss = ( outputs[torch.arange(outputs.size(0)), targets ] - outputs[torch.arange(outputs.size(0)), preds[:,1] ] ).sum()
         loss = ( outputs[torch.arange(outputs.size(0)), targets ] - outputs[torch.arange(outputs.size(0)), max_index_not_target ] ).sum()
     elif explanation_mode == 'weighted':
         outputs = torch.softmax(outputs, dim=1)
         loss = outputs[torch.arange(outputs.size(0)), targets ].sum()
     elif explanation_mode == 'mean':
-        #loss = ( outputs[torch.arange(outputs.size(0)), targets ] * (1 + 1/( 1 - 1000 )) - torch.sum(outputs[torch.arange(outputs.size(0))]) * 1/(( 1 - 1000 )) ).sum()
-        
         weights = -torch.ones(outputs.shape).to(outputs.device)/999
         weights[range(len(weights)), targets] = 1
         loss = (weights * outputs).sum()
-        #loss = outputs[range(len(outputs)), targets].sum()
-        
-        #weights = -torch.ones(outputs.shape).to(outputs.device)/999
-        #weights[range(len(weights)), targets] = 1
-        #loss = (weights * outputs).sum()
-        #loss = pred[range(len(pred)), label].sum()
 
     loss.backward()
     gradients = inputs.grad.clone().detach()
@@ -106,14 +114,13 @@ def grad_sign_perturb(model, inputs_no_norm, targets, no_iterations, eps, explan
     x_0 = inputs_no_norm
     x_i = inputs_no_norm
     alpha = eps / no_iterations
-    
+
     for i in range(no_iterations):
         explanations = get_explanation(model, x_i, targets, explanation_mode)
 
         # gradients on shape [labels, batch, ...input gradients...]
         
         x_i = x_i + alpha * torch.sign(explanations)
-        #x_i = torch.clamp( x_i, torch.max(x_0-eps, 0, keepdim=True).values, torch.min(x_0+eps, 1, keepdim=True).values )
         x_i = torch.clamp(x_i, x_0-eps, x_0+eps)
         x_i = torch.clamp(x_i, 0, 1)
 
@@ -208,7 +215,7 @@ def experiment(dataloader, device, model, no_iterations, no_batches = None, eps=
            pt_original, pt_perturbed_normal, pt_perturbed_max, pt_perturbed_weighted, pt_perturbed_mean
 
 
-def plotFig3(iter1y_t, iter1p_t, iter1acc_t, iter2y_t, iter2p_t, iter2acc_t, iter10y_t, iter10p_t, iter10acc_t, title):
+def plot_figure_3(iter1y_t, iter1p_t, iter1acc_t, iter2y_t, iter2p_t, iter2acc_t, iter10y_t, iter10p_t, iter10acc_t, title, epsilon, with_legend=False):
 
     x = np.arange(4)
     width = 0.07
@@ -233,25 +240,29 @@ def plotFig3(iter1y_t, iter1p_t, iter1acc_t, iter2y_t, iter2p_t, iter2acc_t, ite
     ax1.set_xticks(x)
     ax1.set_xticklabels(['Weighted', 'Original', 'Mean', 'Max'])
     
-    ax1.set_ylabel('Changes over $y_t$ (one challow bar)')
+    ax1.set_ylabel('Changes over $y_t$ (one shallow bar)')
     ax2.set_ylabel('Changes over $p_t$ and Accuracy (two dark bars)')
     
-    fig.legend([iter1acc_t_bar, iter1p_t_bar, iter1y_t_bar,
-                iter2acc_t_bar, iter2p_t_bar, iter2y_t_bar,
-                iter10acc_t_bar, iter10p_t_bar, iter10y_t_bar],
-               ["iteration 1, accuracy", "iteration 1, avg. $p_t$", "iteration 1, avg. $y_t$",
-                "iteration 2, accuracy", "iteration 2, avg. $p_t$", "iteration 2, avg. $y_t$",
-                "iteration 10, accuracy", "iteration 10, avg. $p_t$", "iteration 10, avg. $y_t$"],
-               loc='upper center', bbox_to_anchor=(0.5, -0.07), fancybox=True, shadow=True, ncol=3)
+    
+    if with_legend:
+        fig.legend([iter1acc_t_bar, iter1p_t_bar, iter1y_t_bar,
+                    iter2acc_t_bar, iter2p_t_bar, iter2y_t_bar,
+                    iter10acc_t_bar, iter10p_t_bar, iter10y_t_bar],
+                   ["iteration 1, accuracy", "iteration 1, avg. $p_t$", "iteration 1, avg. $y_t$",
+                    "iteration 2, accuracy", "iteration 2, avg. $p_t$", "iteration 2, avg. $y_t$",
+                    "iteration 10, accuracy", "iteration 10, avg. $p_t$", "iteration 10, avg. $y_t$"],
+                   loc='upper center', bbox_to_anchor=(0.5, -0.07), fancybox=True, shadow=True, ncol=3)
     
     plt.title(title)
-    plt.show(block=True)
-
-
+    
+    plt.savefig("Results/results_%s_Epsilon_%s.png"%(title, epsilon))
+    
+    plt.show()
+    
+    
 if __name__ == '__main__':
 
-    # mobilenet_v3_small
-    for architecture in ['mobilenet_v3_large', 'alexnet', 'resnet18', 'mnasnet1_0', 'googlenet', 'vgg16']: #'densenet161',
+    for architecture in ['resnet18', 'alexnet', 'googlenet', 'mobilenet_v3_small', 'mobilenet_v3_large', 'mnasnet1_0', 'vgg16', 'efficientnet_b1', 'densenet161']:
         model = get_model(architecture)
         print("--------------------Network: ", architecture, "--------------------")
 
@@ -261,17 +272,17 @@ if __name__ == '__main__':
             print("no_iterations: 1")
             accuracy_original_1, accuracy_perturbed_normal_1, accuracy_perturbed_max_1, accuracy_perturbed_weighted_1, accuracy_perturbed_mean_1, \
             yt_original_1, yt_perturbed_normal_1, yt_perturbed_max_1, yt_perturbed_weighted_1, yt_perturbed_mean_1, \
-            pt_original_1, pt_perturbed_normal_1, pt_perturbed_max_1, pt_perturbed_weighted_1, pt_perturbed_mean_1 = experiment(dataloader, device, model, no_iterations=1, no_batches = 1, eps=epsilon)
+            pt_original_1, pt_perturbed_normal_1, pt_perturbed_max_1, pt_perturbed_weighted_1, pt_perturbed_mean_1 = experiment(dataloader, device, model, no_iterations=1, eps=epsilon)
 
             print("no_iterations: 2")
             accuracy_original_2, accuracy_perturbed_normal_2, accuracy_perturbed_max_2, accuracy_perturbed_weighted_2, accuracy_perturbed_mean_2, \
             yt_original_2, yt_perturbed_normal_2, yt_perturbed_max_2, yt_perturbed_weighted_2, yt_perturbed_mean_2, \
-            pt_original_2, pt_perturbed_normal_2, pt_perturbed_max_2, pt_perturbed_weighted_2, pt_perturbed_mean_2 = experiment(dataloader, device, model, no_iterations=2, no_batches = 1, eps=epsilon)
+            pt_original_2, pt_perturbed_normal_2, pt_perturbed_max_2, pt_perturbed_weighted_2, pt_perturbed_mean_2 = experiment(dataloader, device, model, no_iterations=2, eps=epsilon)
 
             print("no_iterations: 10")
             accuracy_original_10, accuracy_perturbed_normal_10, accuracy_perturbed_max_10, accuracy_perturbed_weighted_10, accuracy_perturbed_mean_10, \
             yt_original_10, yt_perturbed_normal_10, yt_perturbed_max_10, yt_perturbed_weighted_10, yt_perturbed_mean_10, \
-            pt_original_10, pt_perturbed_normal_10, pt_perturbed_max_10, pt_perturbed_weighted_10, pt_perturbed_mean_10 = experiment(dataloader, device, model, no_iterations=10, no_batches = 1, eps=epsilon)
+            pt_original_10, pt_perturbed_normal_10, pt_perturbed_max_10, pt_perturbed_weighted_10, pt_perturbed_mean_10 = experiment(dataloader, device, model, no_iterations=10, eps=epsilon)
 
             
             result_file = "Results/results_%s_Epsilon_%s.txt"%(architecture, epsilon)
@@ -336,7 +347,8 @@ if __name__ == '__main__':
             f.close()
 
 
-            '''
+            # Plot results
+
             iter1y_t = [yt_perturbed_weighted_1-yt_original_1, yt_perturbed_normal_1-yt_original_1, yt_perturbed_mean_1-yt_original_1, yt_perturbed_max_1-yt_original_1]
             iter1p_t = [pt_perturbed_weighted_1-pt_original_1, pt_perturbed_normal_1-pt_original_1, pt_perturbed_mean_1-pt_original_1, pt_perturbed_max_1-pt_original_1]
             iter1acc_t = [accuracy_perturbed_weighted_1-accuracy_original_1, accuracy_perturbed_normal_1-accuracy_original_1, accuracy_perturbed_mean_1-accuracy_original_1, accuracy_perturbed_max_1-accuracy_original_1]
@@ -347,5 +359,4 @@ if __name__ == '__main__':
             iter10p_t = [pt_perturbed_weighted_10-pt_original_10, pt_perturbed_normal_10-pt_original_10, pt_perturbed_mean_10-pt_original_10, pt_perturbed_max_10-pt_original_10]
             iter10acc_t = [accuracy_perturbed_weighted_10-accuracy_original_10, accuracy_perturbed_normal_10-accuracy_original_10, accuracy_perturbed_mean_10-accuracy_original_10, accuracy_perturbed_max_10-accuracy_original_10]
 
-            plotFig3(iter1y_t, iter1p_t, iter1acc_t, iter2y_t, iter2p_t, iter2acc_t, iter10y_t, iter10p_t, iter10acc_t, "vgg16")
-            '''
+            plot_figure_3(iter1y_t, iter1p_t, iter1acc_t, iter2y_t, iter2p_t, iter2acc_t, iter10y_t, iter10p_t, iter10acc_t, architecture, epsilon)
