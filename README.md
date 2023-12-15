@@ -21,6 +21,7 @@ python train.py --root <path to unzipped CUB-200>
 
 #### Figure 1 and 2
 Takes roughly 70 hours to run on a single T4 GPU on Google Cloud VM.
+Requires the ImageNet validation dataset to be placed in '../ILSVRC2012'.
 
 ```
 python grad_sign_perturbation.py
@@ -36,3 +37,6 @@ Use the [comparison_max_mean.ipynb](comparison_max_mean.ipynb) notebook. Require
 ```
 python experiment.py --root <path to unzipped CUB-200> -thre 0.1 -model vgg -exp <GC / LA / XC> --test_all
 ```
+
+#### Figure 6
+Use the [logit_explanation_relation.ipynb](logit_explanation_relation.ipynb) notebook. Requires the ImageNet validation dataset to be placed in '../ILSVRC2012'.
