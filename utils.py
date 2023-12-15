@@ -133,7 +133,7 @@ def get_saliency(
 
 def blur(image, saliency, mode='positive'):
     
-    GaussianBlur = transforms.GaussianBlur(101, sigma=(10, 20))
+    GaussianBlur = transforms.GaussianBlur(101, sigma=15)
     background = GaussianBlur(image)
     unsqueezed = saliency.view(1,1,224,224).expand_as(image).detach()
     blurred = image.detach().clone().view(1,3,224,224)
@@ -172,7 +172,7 @@ def equal_blur(x, saliency_1, saliency_2, baseline = 'blur', mode = 'positive'):
         
     
     if baseline == 'blur':
-        GaussianBlur = transforms.GaussianBlur(101, sigma=(10, 20))
+        GaussianBlur = transforms.GaussianBlur(101, sigma=15)
         blur = GaussianBlur(x)
     elif baseline == 'zero':
         blur = torch.zeros(x.shape).to(x.device)
@@ -194,7 +194,6 @@ def equal_blur(x, saliency_1, saliency_2, baseline = 'blur', mode = 'positive'):
     
 
 def get_samples(testset,model,threshold=0.3,max_no_samples=None,no_targets=2):
-   
     model.eval()
     samples = []
     with torch.no_grad():
