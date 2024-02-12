@@ -2,7 +2,7 @@
 
 This is a repository for the corresponding reproducibility review of the paper "“Why Not Other Classes?”: Towards Class-Contrastive Back-Propagation Explanations".
 
-Read our report [here](Report.pdf).
+<!-- Read our report [here](Report.pdf). -->
 
 ## Content
 
