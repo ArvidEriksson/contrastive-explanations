@@ -1,0 +1,30 @@
+\section{Explanation methods}
+\label{appendix: Explanation methods}
+
+\textbf{Gradient} is a common back-propagation based method which directly uses the gradients of the output logit as explanation, defined as $\phi^t(\mathbf{x})_y = \nabla_\textbf{x}y^t$.
+
+\textbf{GradCam} is a class-discriminative localization technique that can be used for any CNN model \citep{gradcam}. GradCAM uses the gradients of the class score, before the softmax, with respect to the feature map activation of the final convolutional layer. Next, the gradients obtained are globally average-pooled across each feature map. This effectively summarizes the importance of each feature map, determining the importance of each feature map in the final classification decision. These weights are then linearly combined with the corresponding feature maps. Finaly, the ReLU activation function is applied to remove all negative pixels, which are likely to be important to other categories of the image. GradCAM are defined as
+
+\begin{equation}
+\phi^t(\mathbf{x})_y = ReLU(\sum_k( \frac{1}{z} \sum_{i,j} \frac{\partial y^t}{\partial A^k_{ij}} ) A^k )
+\end{equation}
+
+where $i,j$ are the spatial coordinates and $z$ are the total number of coordinates. $y^t$ is the logit score with respect to class t, and $A^k$ is the feature map activation of channel $k$. $\frac{\partial y^c}{\partial A^k_{ij}}$ are the gradients, $\frac{1}{z} \sum_{i,j}$ the global average-pooling and $\sum_k(\alpha A^k)$ the weighted linear combination of the feature maps and weights.
+
+\textbf{Linear Approximation} is a method implemented by \texttt{TorchRay}\footnote{See, \href{https://facebookresearch.github.io/TorchRay/attribution.html\#module-torchray.attribution.linear\_approx}{https://facebookresearch.github.io/TorchRay/attribution.html\#module-torchray.attribution.linear\_approx}.}. It creates the explanation map by calculateing the element-wise product of feature and gradients. This gives the explanation
+
+\begin{equation}
+    \phi^t(\mathbf{x})_y = A^k \odot \nabla_{A^k}y^t
+\end{equation}
+
+where $y^t$ is the logit score with respect to class t, and $A^k$ the feature map activation of channel $k$.
+
+\clearpage
+\section{Additional results}
+\label{app:add_res}
+
+\input{Sections/Tables/grad_sign_perturbation_eps001}
+\clearpage
+\input{Sections/Tables/vit_gradcam_table-2}
+\null
+

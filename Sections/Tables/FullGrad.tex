@@ -1,0 +1,50 @@
+\begin{figure}[t]
+%\scriptsize
+\small
+\centering
+\resizebox{0.8\textwidth}{!}{\
+\begin{tabular}
+{ l l c@{\hspace{0.1cm}} c@{\hspace{0.3cm}} c@{\hspace{0.1cm}} c@{\hspace{0.3cm}} c@{\hspace{0.1cm}} c@{\hspace{0.3cm}} c@{\hspace{0.1cm}} c@{\hspace{0.3cm}}}
+
+\toprule
+    \multicolumn{2}{l}{\rotatebox[origin=c]{90}{Input}} &
+    \multicolumn{2}{c}{$\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/input.png}}}$} &
+    \multicolumn{2}{c}{$\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/input.png}}}$} &
+    \multicolumn{2}{c}{$\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/input.png}}}$} &
+        \vspace{0.1cm}
+\\
+
+    &
+    &
+    $t_1$ &
+    $t_2$ &
+    $t_1$ &
+    $t_2$ &
+    $t_1$ &
+    $t_2$ &\\
+
+\midrule
+    \vspace{0.1cm}
+    \multirow{2}{*}{\rotatebox[origin=c]{90}{FullGrad}} &
+    \rotatebox[origin=c]{90}{Original} &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/gradcam_FG_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/gradcam_FG_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/gradcam_FG_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/gradcam_FG_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/gradcam_FG_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/gradcam_FG_t2.png}}}$ \\%[1cm]
+    
+    &
+    \rotatebox[origin=c]{90}{Weighted} &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/contrastive_gradcam_FG_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/contrastive_gradcam_FG_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/contrastive_gradcam_FG_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/contrastive_gradcam_FG_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/contrastive_gradcam_FG_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/contrastive_gradcam_FG_t2.png}}}$ \\
+
+\bottomrule
+\end{tabular} }
+\caption{Comparison between the back-propagation from logits $y_t$ (Original) and weighted contrastive
+back-propagation from $p_t$ (Weighted) for FullGrad. The columns for each image signify the most possible and second possible class, respectively. Red and blue signal positive and negative activations respectively after normalization.} \label{fig:fullgrad}
+\end{figure}

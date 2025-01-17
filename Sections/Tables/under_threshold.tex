@@ -1,0 +1,64 @@
+\begin{table}
+    \tiny
+    
+    %\fontfamily{lmodern}\selectfont % Set font family to Latin Modern Sans Serif
+    
+    \centering
+    \caption{Reproduction of Table \ref{t:blurring} using threshold criteria $p_2 < 0.1$ for GradCAM (GC). The probability of the second most likely class is almost always $p_2 \approx 0$ with an average $\bar{p}_2 = 0.01$, and has been omitted for this reason as it is mostly ambiguous.} \label{t:under_threshold}
+    \vspace{2mm}
+    \resizebox{\textwidth}{!}{\
+    \begin{tabular}{c | c | c | c | c  c | c  c | c  c | c  c | c  c | c  c}
+    %\abovetopsep
+    \toprule
+    %\hline
+        \multicolumn{3}{c |}{} &
+        \multirow{3}{*}{$p_t$} &
+        \multicolumn{4}{c |}{Gaussian Blur} &
+        \multicolumn{4}{c |}{Zeros} &
+        \multicolumn{4}{c}{Channel-wise Mean} \\ \cline{5-16}
+
+        \multicolumn{3}{c |}{} &
+        &
+        \multicolumn{2}{c |}{Pos. Features} &
+        \multicolumn{2}{c |}{Neg. Features} &
+        \multicolumn{2}{c |}{Pos. Features} &
+        \multicolumn{2}{c |}{Neg. Features} &
+        \multicolumn{2}{c |}{Pos. Features} &
+        \multicolumn{2}{c}{Neg. Features} \\ \cline{5-16}
+
+        \multicolumn{3}{c |}{} &
+        &
+        ori. &
+        wtd. &
+        ori. &
+        wtd. &
+        ori. &
+        wtd. &
+        ori. &
+        wtd. &
+        ori. &
+        wtd. &
+        ori. &
+        wtd.\\
+
+        \midrule
+
+        \multirow{1}{*}{CUB-200} &
+        \multirow{1}{*}{GC} &
+        $t_1$ &
+        0.985 &
+        \textbf{0.981} &
+        0.979 &
+        0.442 &
+        \textbf{0.351} &
+        0.973 &
+        \textbf{0.974} &
+        0.438 &
+        \textbf{0.358} &
+        \textbf{0.977} &
+        \textbf{0.977} &
+        0.437 &
+        \textbf{0.349} \\
+    \midrule
+    \end{tabular} }
+\end{table}

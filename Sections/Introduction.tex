@@ -1,0 +1,58 @@
+\section{Introduction}
+% Before the first paragraph, I'd suggest adding one short paragraph to "place your work in high-level context", i.e. something in line of NN  being black-box models -> XAI is needed to build trustworthy models -> most prior work focus on providing explanation to one specific class -> Wang & Wang proposes a method for class-contrastive explanation.
+
+% You can probably get some inspiration from the original paper as well.
+
+
+Deep Neural Networks (DNNs) have seen rapid growth in recent years due to their great performance across many fields. However, these high-performing models suffer from being black-box, and therefore are hard to interpret the decision-making process of. This is especially dangerous in security-critical systems, such as in medicine or autonomous driving, where full transparency of decisions is needed. As an approach to making DNNs more interpretable the field of Explainable AI studies different methods for explaining the decision process of DNNs. A paper that studies such an approach, with a focus on computer vision and back-propagation-based methods is the paper under scrutiny in this review.
+
+% New:
+The original paper \textit{“Why Not Other Classes?”: Towards Class-Contrastive Back-Propagation Explanations} \citep{wang2022why} propose a new weighted contrastive back-propagation-based explanation. This method aims to improve the explanation of why one specific class are chosen over others. By answering the question of what differs between two similar classes, rather than what is important for both, the goal is to get a explanation method that closer matches how people answers classification tasks.
+
+Their proposed explanation method, called weighted contrast, are a class-wise weighted combination of the original explanation defined as
+
+\begin{equation}
+\label{eq: weighted}
+    \phi_i^t(\pmb{x})_{\textnormal{weighted}} = \phi_i^t(\pmb{x}) - \sum_{s \neq t} \alpha_s \phi_i^s(\pmb{x})
+\end{equation}
+
+where $\phi_i$ is the original explanation for pixel $i$ and the weight $\alpha$ is the softmax activation of the logit vector without the target class $t$
+
+\begin{equation}
+\label{eq: weighted-alpha}
+    \alpha_s = \frac{\exp{y_s}}{\sum_{k \neq t}\exp{y_k}}
+\end{equation}
+
+The original explanation can be any back-Propagation based explanation method. This paper will further investigate three of the methods proposed, namely, Gradient, Linear Approximation (LA) and GradCAM as detailed in Appendix \ref{appendix: Explanation methods}. The original paper further shows that the weighted contrast method is equal to taking the explanation directly toward the probability after the softmax layer for most gradient-based methods.
+
+% OLD:
+\begin{comment}
+% The original paper \textit{“Why Not Other Classes?”: Towards Class-Contrastive Back-Propagation Explanations} \citep{wang2022why} describes how back-propagation-based explanations used in image classification can utilize back-propagation from the softmax-layer to generate contrastive explanations. These explanations signal key parts of the input used in favoring classifying as one class over others, rather than signaling key parts for classification in general.
+
+% \subsection{Summary of original papers method and results (for context) ?}
+In the original paper, four different explanation methods are compared, original, mean-, max- and weighted contrast, where weighted contrast is considered the paper's novel contribution. Weighted contrast is formulated as
+
+\begin{equation}
+    \phi_i^t(\pmb{x})_{\textnormal{weighted}} = \phi_i^t(\pmb{x}) - \sum_{s \neq t} \alpha_s \phi_i^s(\pmb{x})
+\end{equation}
+
+where $\phi_i$ is the original explanation for pixel $i$ and the weight $\alpha$ is the softmax activation of the logit vector without the target class $t$
+
+\begin{equation}
+    \alpha_s = \frac{\exp{y_s}}{\sum_{k \neq t}\exp{y_k}}
+\end{equation}
+
+The paper further shows that the weighted contrast method is equal to taking the explanation directly toward the probability after the softmax layer. 
+\end{comment}
+
+The authors argue that this is a superior contrastive explanation method by performing two forms of adversarial attacks with regard to the different explanations. They show that an adversarial attack on the pixels highlighted by weighted contrast results in a more significant effect on the accuracy of the model, while original methods more accurately impact the logit strength. By performing a blurring and removal attack with explanations extracted from GradCAM and Linear Approximation they show that their method finds more impactful negative and positive regions of interest with regards to the model accuracy. 
+
+This document aims to reproduce the main results of the paper as well as provide insights into the general reproducibility and impact of the paper. We also expand upon the paper and attempt applications outside its scope, with other back-propagation-based explanation methods as well as applying it to Vision Transformers (ViT) as introduced in \citet{visual-transformer}. This was done to see the generalization capabilities of the paper.
+% Though not explained in the article this is easily explained as an adversarial attack utilizing the gradient of the softmax of course will be more optimal in changing the softmax value.
+
+% \section{Discussion About the paper in a scientific context}
+% The papers main contribution to the field is an argument for utilizing the softmax scores instead of logit scores for explainability methods. Though, in making their argument they have gone about it in a convoluted way. As has been mentioned by previous reviewers, the method in itself is not novel, and has in many cases been the norm rather than the exception they have purported it to be. The way the experiment made in section 5.1 is made up is also slightly convoluted and fails to answer "why" their model is better, which are rather easy to explain due to the properties of adversarial attacks wrt. logits and probabilities. To be clear, this is a good observation and argument - it should just have been stated in clear text. In that light, the experiments become somewhat questionable - whether we actually gain a better explanation for this, or if we have just found a way better optimize adversarial attacks in a way that might be more noisy. 
+
+% In experiment 5.2, by only sampling the ones with $p_{t_2} > \hat p = 0.1$ it also exaggerates the contrast between the two methods - giving a great argument for using probabilities instead of logits, but not for why their method is better. Especially since it has not been done in regards to other state of the art methods.
+
+% We can provide a comparison with some other state of the art models, and also show how the results become less exaggerated without a threshold.

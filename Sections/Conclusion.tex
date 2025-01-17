@@ -1,0 +1,10 @@
+\section{Conclusion}
+% Overall the paper provides a clear and grounded explanation as to why propagating from a final softmax layer rather than the preceding logit yields a useful contrastive explanation.
+
+Overall the paper provides a clear argument as to how back-propagating from the softmax prediction instead of the logits gives improved connectivity to the actual prediction and thus a more relevant contrastive explanation. They propose a simple way of implementing this, which is applicable to many models and methods, and it shows a clear connection to accuracy using removal and blurring metrics. Their method also answers why a sample is predicted to belong to a certain class above others.
+
+We have reimplemented their work, made some corrections to their method, and have further been able to apply their method to other similar tasks using Vision Transformer architectures and the XGradCAM and FullGrad explanation methods with good results. Due to the simple nature of their contrastive method, one can also easily reproduce it by using back-propagating explanation methods from after the softmax layer which makes it generally reproducible. Some methods might, however, require simple modifications such as removing ReLUs or somehow introducing contrastiveness such as through normalization. 
+
+% Simple implementation and easy to add to other explanation methods
+% Though not explained in the article this is easily explained as an adversarial attack utilizing the gradient of the softmax of course will be more optimal in changing the softmax value.
+% Problematic that they only analyze the most unsure and hence for this method top preforming predictions, without clearly state this limitation.

@@ -1,0 +1,95 @@
+\begin{figure}[t!]
+\tiny
+\centering
+
+%\begin{minipage}[b]{0.48\textwidth}
+\resizebox{\textwidth}{!}{\
+\begin{subfigure}{.5\textwidth}
+\begin{tabular}
+{ 
+c@{\hspace{0.09cm}} c@{\hspace{0.09cm}} c@{\hspace{0.09cm}} c@{\hspace{0.09cm}} c@{\hspace{0.09cm}}}
+
+    % & \textbf{Original} & \text{\textbf{Standard} \\ \textbf{GradCAM}} & \textbf{GradCAM}  \textbf{wo/ ReLU} & \textbf{Contrastive} \textbf{GradCAM} \\
+    & \thead{Original} & \thead{Standard \\ GradCAM} & \thead{GradCAM \\ w/o ReLU} & \thead{Contrastive \\ GradCAM} \\
+    
+    \vspace{0.09cm}
+    % $\vcenter{\hbox{Ice Cream}}$ &
+    % \thead{Ice-\\cream \\ \texttt{p=0.30}} &
+    $\vcenter{\hbox{\shortstack{\textbf{Ice} \textbf{cream} \\ p=0.30}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/icecream_l10_gradcam/original.jpg}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/icecream_l10_gradcam/standard_cam_w_relu.jpg}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/icecream_l10_gradcam/standard_cam.jpg}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/icecream_l10_gradcam/contrastive_cam.jpg}}}$ \\
+
+    \vspace{0.09cm}
+    % \thead{Chocolate \\ Sauce} &
+    $\vcenter{\hbox{\shortstack{\textbf{Chocolate} \\ \textbf{sauce} \\ p=0.30}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/chocolate_sauce_l10_gradcam/original.jpg}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/chocolate_sauce_l10_gradcam/standard_cam_w_relu.jpg}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/chocolate_sauce_l10_gradcam/standard_cam.jpg}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/chocolate_sauce_l10_gradcam/contrastive_cam.jpg}}}$ \\
+
+    \vspace{0.09cm}
+    % $\vcenter{\hbox{Digital Watch}}$ &
+    % \thead{Digital \\ Watch} &
+    $\vcenter{\hbox{\shortstack{\textbf{Digital} \\ \textbf{watch} \\ p=0.32}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/digital_watch_l10_gradcam/original.jpg}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/digital_watch_l10_gradcam/standard_cam_w_relu.jpg}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/digital_watch_l10_gradcam/standard_cam.jpg}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/digital_watch_l10_gradcam/contrastive_cam.jpg}}}$ \\
+
+    \vspace{0.09cm}
+    % $\vcenter{\hbox{Stopwatch}}$ &
+    % \thead{Stop-\\watch} &
+    $\vcenter{\hbox{\shortstack{\textbf{Stopwatch} \\ p=0.32}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/stopwatch_l10_gradcam/original.jpg}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/stopwatch_l10_gradcam/standard_cam_w_relu.jpg}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/stopwatch_l10_gradcam/standard_cam.jpg}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/stopwatch_l10_gradcam/contrastive_cam.jpg}}}$ \\  
+
+\end{tabular}
+\caption{} \label{t:}
+\label{fig:vit-gradcam}
+\end{subfigure}
+
+\begin{subfigure}{.5\textwidth}
+\begin{tabular}
+{ 
+c@{\hspace{0.09cm}} c@{\hspace{0.09cm}} c@{\hspace{0.09cm}} c@{\hspace{0.09cm}} c@{\hspace{0.09cm}}}
+    & \thead{Original} & \thead{Gradient-\\weighted \\ Attention \\ Rollout} & \thead{Gradient-\\ weighted \\ Attention \\ Rollout \\ w/o ReLU} & \thead{Contrastive \\ Gradient-\\weighted \\ Attention \\ Rollout} \\
+    
+    \vspace{0.09cm}
+    $\vcenter{\hbox{\shortstack{\textbf{Ice} \textbf{cream} \\ p=0.30}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/attention_rollout/icecream/original.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/attention_rollout/icecream/standard.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/attention_rollout/icecream/standard_contrastive.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/attention_rollout/icecream/contrastive.png}}}$ \\
+
+    \vspace{0.09cm}
+    $\vcenter{\hbox{\shortstack{\textbf{Chocolate} \\ \textbf{sauce} \\ p=0.30}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/attention_rollout/chocolate/original.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/attention_rollout/chocolate/standard.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/attention_rollout/chocolate/standard_contrastive.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/attention_rollout/chocolate/contrastive.png}}}$ \\
+
+    \vspace{0.09cm}
+    $\vcenter{\hbox{\shortstack{\textbf{Digital} \\ \textbf{watch} \\ p=0.32}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/attention_rollout/digital/original.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/attention_rollout/digital/standard.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/attention_rollout/digital/standard_contrastive.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/attention_rollout/digital/contrastive.png}}}$ \\
+
+    \vspace{0.09cm}
+    $\vcenter{\hbox{\shortstack{\textbf{Stopwatch} \\ p=0.32}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/attention_rollout/stopwatch/original.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/attention_rollout/stopwatch/standard.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/attention_rollout/stopwatch/standard_contrastive.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = \myfigurewidth\textwidth]{figures/vit-figures/attention_rollout/stopwatch/contrastive.png}}}$ \\
+
+\end{tabular}
+\caption{} \label{t:}
+\end{subfigure}
+}
+
+\caption{Comparison between proposed ViT explanations for a pre-trained ImageNet model. In (a) a comparison between GradCAM, GradCAM without ReLU, and Contrastive GradCAM is considered. In (b) a comparison between Gradient-weighted Attention rollout (GWAR) of the standard, without ReLU, and contrastive variant is considered. Red sections are considered areas with high explainability. To adapt the method to the contrastive version all ReLU operations were removed and the gradients were calculated from the softmax output instead of the logits.} \label{t:}
+\end{figure}

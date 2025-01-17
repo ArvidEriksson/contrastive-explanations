@@ -1,0 +1,130 @@
+# To be filled by the author(s) at the time of submission
+# -------------------------------------------------------
+
+# Title of the article:
+#  - For a successful replication, it should be prefixed with "[Re]"
+#  - For a failed replication, it should be prefixed with "[¬Re]"
+#  - For other article types, no instruction (but please, not too long)
+title: "[Re] Reproducibility review of “Why Not Other Classes?”: Towards Class-Contrastive Back-Propagation Explanations"
+
+# List of authors with name, orcid number, email and affiliation
+# Affiliation "*" means contact author (required even for single-authored papers)
+# To include author suffix format name as Last Suffix, First M.I. (e.g. Schackart III, Kenneth E.)
+authors:
+  - name: Arvid Eriksson
+    orcid: 0009-0006-9434-0277
+    email: arveri@kth.se
+    affiliations: 1,*
+    
+  - name: Anton Israelsson
+    orcid:
+    email: antonisr@kth.se
+    affiliations: 1      # * is for contact author
+
+  - name: Mattias Kallhauge
+    orcid:
+    email: kallh@kth.se
+    affiliations: 1
+
+# List of affiliations with code (corresponding to author affiliations), name
+# and address. You can also use these affiliations to add text such as "Equal
+# contributions" as name (with no address).
+affiliations:
+  - code:    1
+    name:    KTH Royal Institute of Technology, Department of Computer Science
+    address: Stockholm, Sweden
+
+
+# List of keywords (adding the programming language might be a good idea)
+keywords: rescience c, rescience x, python, explainability, computer vision
+
+# Code URL and DOI/SWH (url is mandatory for replication, doi after acceptance)
+# You can get a DOI for your code from Zenodo, or an SWH identifier from
+# Software Heritage.
+#   see https://guides.github.com/activities/citable-code/
+code:
+  - url: https://github.com/ArvidEriksson/contrastive-explanations
+  - doi: 
+  - swh: 
+
+# Data URL and DOI (optional if no data)
+data:
+  - url:
+  - doi:
+
+# Information about the original article that has been replicated
+replication:
+ - cite: Wang, Yipei, and Xiaoqian Wang. "Why Not Other Classes?" Towards Class-Contrastive Back-Propagation Explanations. Advances in Neural Information Processing Systems, 6 Dec. 2022.
+ - bib:  wang2022why
+ - url:  https://proceedings.neurips.cc/paper_files/paper/2022/file/3b7a66b2d1258e892c89f485b8f896e0-Paper-Conference.pdf
+ - doi:
+
+# Don't forget to surround abstract with double quotes
+abstract: "“Why Not Other Classes?”: Towards Class-Contrastive Back-Propagation Explanations
+(Wang & Wang, 2022) provides a method for contrastively explaining why a certain class in a
+neural network image classifier is chosen above others. This method consists of using back-
+propagation-based explanation methods from after the softmax layer rather than before.
+Our work consists of reproducing the work in the original paper. We also provide extensions
+to the paper by evaluating the method on XGradCAM, FullGrad, and Vision Transformers
+to evaluate its generalization capabilities. The reproductions show similar results as the
+original paper, with the only difference being the visualization of heatmaps which could not
+be reproduced to look similar. The generalization seems to be generally good, with imple-
+mentations working for Vision Transformers and alternative back-propagation methods. We
+also show that the original paper suffers from issues such as a lack of detail in the method
+and an erroneous equation which makes reproducibility difficult. To remedy this we provide
+an open-source repository containing all code used for this project."
+
+# Bibliography file (yours)
+bibliography: bibliography.bib
+  
+# Type of the article
+# Type can be:
+#  * Editorial
+#  * Letter
+#  * Replication
+type: Replication
+
+# Scientific domain of the article (e.g. Computational Neuroscience)
+#  (one domain only & try to be not overly specific)
+domain: Computer Vision
+
+# Coding language (main one only if several)
+language: Python
+
+  
+# To be filled by the author(s) after acceptance
+# -----------------------------------------------------------------------------
+
+# For example, the URL of the GitHub issue where review actually occured
+review: 
+  - url: 
+
+contributors:
+  - name:
+    orcid: 
+    role: editor
+  - name:
+    orcid:
+    role: reviewer
+  - name:
+    orcid:
+    role: reviewer
+
+# This information will be provided by the editor
+dates:
+  - received:  November 1, 2018
+  - accepted:
+  - published: 
+
+# This information will be provided by the editor
+article:
+  - number: # Article number will be automatically assigned during publication
+  - doi:    # DOI from Zenodo
+  - url:    # Final PDF URL (Zenodo or rescience website?)
+
+# This information will be provided by the editor
+journal:
+  - name:   "ReScience C"
+  - issn:   2430-3658
+  - volume: 4
+  - issue:  1

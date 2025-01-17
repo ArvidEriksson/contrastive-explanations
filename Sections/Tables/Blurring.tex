@@ -1,0 +1,149 @@
+\begin{table}
+    \tiny
+    
+    %\fontfamily{lmodern}\selectfont % Set font family to Latin Modern Sans Serif
+    
+    \centering
+    \caption{Reproduction of Table 1 in the original paper using equal blurring. Comparisons between weighted contrastive method (wtd.) and original method (ori.) when blurring and masking. Using baselines Gaussian Blur, Zeros, and Channel-wise Mean and the methods Linear Approximation (LA), GradCAM (GC), and XGradCAM (XC). $t_1$ and $t_2$ are the classes with the highest and second highest probability respectively. Each line shows how the average relative probability changes among each image's top two classes. Pos. and Neg. Features mean that only positive and negative features are kept with respect to the corresponding target class. It is expected that when the positive or negative features corresponding to the target are kept, the expected relative probability is expected to increase or decrease respectively.} \label{t:blurring}
+    \vspace{2mm}
+    \resizebox{\textwidth}{!}{\
+    \begin{tabular}{c | c | c | c | c  c | c  c | c  c | c  c | c  c | c  c}
+    %\abovetopsep
+    \toprule
+    %\hline
+        \multicolumn{3}{c |}{} &
+        \multirow{3}{*}{$p_t$} &
+        \multicolumn{4}{c |}{Gaussian Blur} &
+        \multicolumn{4}{c |}{Zeros} &
+        \multicolumn{4}{c}{Channel-wise Mean} \\ \cline{5-16}
+
+        \multicolumn{3}{c |}{} &
+        &
+        \multicolumn{2}{c |}{Pos. Features} &
+        \multicolumn{2}{c |}{Neg. Features} &
+        \multicolumn{2}{c |}{Pos. Features} &
+        \multicolumn{2}{c |}{Neg. Features} &
+        \multicolumn{2}{c |}{Pos. Features} &
+        \multicolumn{2}{c}{Neg. Features} \\ \cline{5-16}
+
+        \multicolumn{3}{c |}{} &
+        &
+        ori. &
+        wtd. &
+        ori. &
+        wtd. &
+        ori. &
+        wtd. &
+        ori. &
+        wtd. &
+        ori. &
+        wtd. &
+        ori. &
+        wtd.\\
+
+        \midrule
+
+        \multirow{6}{*}{CUB-200} &
+        \multirow{2}{*}{LA} &
+        $t_1$ &
+        0.712 &
+        0.695 &
+        \textbf{0.789} &
+        0.419 &
+        \textbf{0.274} &
+        0.663 &
+        \textbf{0.754} &
+        0.428 &
+        \textbf{0.292} &
+        0.676 &
+        \textbf{0.766} &
+        0.426 &
+        \textbf{0.281} \\
+
+         &
+         &
+        $t_2$ &
+        0.288 &
+        0.560 &
+        \textbf{0.738} &
+        0.390 &
+        \textbf{0.211} &
+        0.563 &
+        \textbf{0.717} &
+        0.398 &
+        \textbf{0.253} &
+        0.558 &
+        \textbf{0.729} &
+        0.391 &
+        \textbf{0.235} \\
+
+         &
+        \multirow{2}{*}{GC} &
+        $t_1$ &
+        0.712 &
+        0.747 &
+        \textbf{0.858} &
+        0.428 &
+        \textbf{0.271} &
+        0.731 &
+        \textbf{0.850} &
+        0.432 &
+        \textbf{0.286} &
+        0.745 &
+        \textbf{0.857} &
+        0.426 &
+        \textbf{0.277} \\
+
+         &
+         &
+        $t_2$ &
+        0.288 &
+        0.461 &
+        \textbf{0.759} &
+        0.402 &
+        \textbf{0.199} &
+        0.469 &
+        \textbf{0.761} &
+        0.414 &
+        \textbf{0.226} &
+        0.468 &
+        \textbf{0.759} &
+        0.406 &
+        \textbf{0.214} \\
+
+         &
+        \multirow{2}{*}{XC} &
+        $t_1$ &
+        0.712 &
+        0.733 &
+        \textbf{0.847} &
+        0.422 &
+        \textbf{0.248} &
+        0.711 &
+        \textbf{0.838} &
+        0.426 &
+        \textbf{0.266} &
+        0.719 &
+        \textbf{0.844} &
+        0.419 &
+        \textbf{0.253} \\
+
+         &
+         &
+        $t_2$ &
+        0.288 &
+        0.504 &
+        \textbf{0.785} &
+        0.393 &
+        \textbf{0.169} &
+        0.515 &
+        \textbf{0.777} &
+        0.402 &
+        \textbf{0.184} &
+        0.511 &
+        \textbf{0.784} &
+        0.395 &
+        \textbf{0.177} \\
+    \midrule
+    \end{tabular} }
+\end{table}

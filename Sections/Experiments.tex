@@ -1,0 +1,104 @@
+\section{Experiments} % results regarding the experiments 
+\label{experiments}
+
+In this section, we detail the various reproduction experiments and additions to the original paper. They were performed using the \texttt{PyTorch} library and the code is available publicly at \href{https://github.com/ArvidEriksson/contrastive-explanations/}{https://github.com/ArvidEriksson/contrastive-explanations/} under the MIT License. All experiments were performed on a \texttt{n2-standard-4} Google Cloud VM with an NVIDIA T4 GPU.
+
+%Some of the code in section \ref{gradcam_subsection} is originally from a repository of the authors of the original paper found at \href{https://github.com/yipei-wang/ClassContrastiveExplanations/}{https://github.com/yipei-wang/ClassContrastiveExplanations/} but has been modified and extended. 
+
+
+\subsection{Reproducing 5.1 Back-Propagation till the Input Space}
+\label{backpropinput}
+This section reproduces the experiments from section 5.1 in the original paper. The experiments test nine networks with perturbed input images where the perturbation uses four different explanation methods to select pixels to perturb. The four methods are original, mean, max and weighted.
+
+\textit{Original} is gradient explanation defined as $\phi^t(\mathbf{x}) = \nabla_\textbf{x}y^t$.
+
+\textit{Mean} is the original explanation averaged over all classes as, $\phi^t(\mathbf{x}) = \nabla_\textbf{x}y^t - \sum_{s \neq t} \nabla_\textbf{x}y^s $.
+
+\textit{Max} is considering only the correct class and the highest other class, defined as $\phi^t(\mathbf{x}) = \nabla_\textbf{x}y^t - \nabla_\textbf{x}y^{s^*}$, where $s^* = arg \max_{s \neq t}y^s$
+
+\textit{Weighted} is the original papers new method shown in (\ref{eq: weighted}), using the \textit{original} explanation method, which gives $\phi^t(\mathbf{x}) = \nabla_\textbf{x}y^t - \sum_{s \neq t} \alpha_s \nabla_\textbf{x}y^s$, where $\alpha$ is given by (\ref{eq: weighted-alpha}).
+
+All models use \texttt{PyTorch} pre-trained models, with the most up-to-date default weights as of writing, and are tested on the validation set of ILSVRC2012 \citep{ILSVRC2012}. The experiments are repeated with a perturbation limit, $\epsilon$, of $\num{3e-3}$, see Figure \ref{f:grad_sign_perturbation_eps_003}. This differs from the original papers reported $\epsilon=10^{-3}$, while after being in contact with the original authors we found that $\epsilon=\num{3e-3}$ had been used. An experiment with $\epsilon=10^{-3}$ can be found in Figure \ref{f:grad_sign_perturbation_eps_001} in Appendix \ref{app:add_res}.
+
+Furthermore, the equations for the gradient sign perturbation in the original paper turned out to have errors in the clamping and indexing of the iterations. The correct equations are
+\begin{gather}
+    \pmb{x}^{n+1} \gets \pmb{x}^n + \alpha \operatorname{sign}(\phi^t(\pmb{x}^n)) \\
+    \pmb{x}^{n+1} \gets \operatorname{clamp}(\pmb{x}^{n+1}, \max(\pmb{x}^0 - \epsilon, 0), \min(\pmb{x}^0 + \epsilon, 1))
+\end{gather}
+where $n$ is the number of iterations, $\epsilon$ is the perturbation limit, and
+$\alpha = \frac{\epsilon}{n_{tot}}$ is the step size, ${n_{tot}}$ is the total number of iterations.
+
+Our results verify the results reported in the original paper and are evidence for Claim 1, since the weighted and max explanation methods yield an increase to $p_t$ and accuracy, while the original and mean explanation methods yield an increase to $y_t$. Although the results are similar to those of the original paper there are some numerical differences in Figure \ref{f:grad_sign_perturbation_eps_003} which is probably due to different weights in the models and hence also different original performance.
+
+\input{Sections/Tables/grad_sign_perturbation_eps003}
+
+
+\subsection{Reproducing 5.2 Back-Propagation till the Activation Space}
+\label{gradcam_subsection}
+
+This section reproduces section 5.2 in the original paper by performing the same experiments of both visualization and effects of blurring and masking. These experiments were all performed on VGG-16 with batch normalization \citep{vgg16} fine-tuned on the CUB-200 dataset \citep{cub200}. The fine-tuning was done with an SGD optimizer with momentum using a batch size of $128$, learning rate of $10^{-3}$, momentum of $0.9$, and weight decay of $5 \times 10^{-4}$. The model was trained for $200$ epochs on the training set as defined by the dataset. For an exact implementation or to reproduce the model, see our \href{https://anonymous.4open.science/r/contrastive-explanations-58EE/}{repository}. The results of this section generally show evidence for Claim 2, both qualitatively and quantitatively, and show that the proposed weighted contrastive method highlights crucial areas for classification when the model classifies between several dominant classes. The extensions to XGradCAM and FullGrad also show generalizability of the method and thus strengthens Claim 3.
+
+\subsubsection{Visualizations}
+Reproduction of the visualizations of three different back-propagation-based methods can be seen in Figure \ref{fig:original_weighted_comp}. Here we compare GradCAM and Linear Approximation, as described in the original paper, and XGradCAM, as described in section \ref{SectionXGradCAM}, to their contrastive weighted counterpart, which was obtained by back-propagating from the softmax neuron $p_t$ of the target class $t$ rather than its logit $y_t$. The visualization was done by overlapping the bilinearly interpolated relevance map on top of the original image with an alpha of $0.5$. A centered norm was applied on the heatmap before visualizing using the \texttt{bwr} colormap in \texttt{Matplotlib}. The images were picked such that $p_2 > 0.1$ and were selected at random to prevent bias from only selecting good samples. Observe that the samples picked are different from those in the original paper as those samples did not have a probability for the second most probable class over the threshold.
+
+The results are partly in line with what the original paper suggests. Firstly, one can note that the original explanation method is quite consistent among the two classes with differences being mostly the intensity of the positive and negative areas. Secondly, one can also see that the weighted methods produce almost complementary heatmaps for the two classes, which makes sense as they are mostly dominant over all other classes. Lastly, we see a large difference in the size of the negative and positive areas visualized compared to the original paper. This is presumably due to different methods of visualization, but as the procedure of visualization of the original paper was not detailed this cannot be confirmed. Observe that the large negative areas in some images, especially seen when comparing our GradCAM to other implementations, are due to the omission of ReLU as described in the original paper. Our results therefore also conflict with the claim in the original paper in appendix G, where the authors claim that non-contrastive methods have much larger positive than negative areas. In Figure \ref{fig:original_weighted_comp} one can see that the original GradCAM has much larger negative areas than positive for all selected images.
+
+\input{Sections/Tables/Original-Weighted back-propagation}
+
+The same experiments when performed using FullGrad produce fully negative saliency maps. The modified FullGrad is therefore not truly contrastive as it does not have both positive and negative contributions instead one has to use normalization and assume that they are evenly distributed. When normalizing is applied to the final saliency map the results are similar to those seen in Figure \ref{fig:original_weighted_comp} and some select images can be seen in Figure \ref{fig:fullgrad}. These seem to be of a more fine-grained nature than the GradCAM-based methods in Figure \ref{fig:original_weighted_comp} while largely highlighting the same areas. This suggests a suitable alternative to GradCAM-based methods and that a contrastive visualization is possible for FullGrad but that this relies on normalization.
+
+\input{Sections/Tables/FullGrad}
+
+\subsubsection{Blurring and masking}
+Reproduction of the blurring and masking experiment seen in Table 1 of the original paper can be seen in Table \ref{t:blurring}. Here we also added an additional row with results using XGradCAM. FullGrad is not analyzed as the modified version only produces negative areas. This gave similar results to GradCAM and Linear Approximation although performed slightly better on the negative features and for positive features for the second most probable class $t_2$. Here we use the same baselines as the original paper with the motivation of them having slightly different results without a generally accepted standard \citep{baselinesimpact}. The values in the table are the average relative probability of the most and second most probable classes for each image. This relative probability is defined as $\Bar{p}_{t_i} = \mathbb{E}\left[e^{y_{t_i}} / (e^{y_{t_1}} + e^{y_{t_2}})  \right], i=1,2$ where $t_i \in [c]$ represents the $i$-th most possible class. These expectations are, like in the original paper, only calculated over samples that fulfill the threshold criteria $p_2 > 0.1$.
+
+The results are very similar to those of the original paper, although not identical, and show the same patterns. We decided to use equal blurring and masking here to prevent bias where one method might yield larger or smaller negative areas to guarantee that the original and weighted methods both modify an equal number of pixels. This was also suggested in the original paper in appendix G and seems to have a minor impact on the results while negating some bias.
+% We want to emphasize, however, that these results are expected since the weighted method back-propagates from the softmax neuron $p_t$, and therefore blurring using that method will impact the resulting activation of the very same neuron more than back-propagating from the preceding logit $y_t$. 
+
+\input{Sections/Tables/Blurring}
+
+
+
+\subsection{Reproducing 5.3 Comparison with Mean/Max Contrast}
+
+We perform the same experiments as in section 5.3 of the original article. Here we reuse the same VGG-16 model used in section \ref{gradcam_subsection} and implement mean and max contrast as described in the original paper. The used method for visualization is also the same as in section \ref{gradcam_subsection} and a threshold of $p_3 > 0.1$ is used. The results, seen in Figure \ref{f:meanmaxcomp}, are similar to the original paper, especially the observation that original and mean methods yield extremely similar results due to the tiny scaling factor used when subtracting by the other classes in the mean method. We also note that max similarity for the two most probable classes is each other's inverse and that the weighted method gives a similar but more detailed comparison that includes several classes simultaneously. Like in section \ref{gradcam_subsection} we also observe that the negative areas are much larger than in the compared article, presumably due to different visualization methods.
+
+Figure \ref{f:meanmaxcomp} also highlights the strengths of the weighted contrastive method. Here it is clear that the weighted method helps give detail to which areas of the image are key for a specific classification given a choice of several dominating classes. This can be useful when debugging misclassified samples where positive regions using the weighted method indicate regions that the model considered in its choice. For example, for the top-left part of Figure \ref{f:meanmaxcomp} one can clearly see that the top class puts a heavy bias on a few select spots of the background, thus indicating that the model might be utilizing non-object pixels to classify the object. This is further evidence for Claim 2.
+\input{Sections/Tables/Comparison mean-max contrast}
+
+
+
+\subsection{Vision Transformers and contrastive GradCAM}
+To adapt GradCAM to Vision Transformer models the outputs of the multi-head attention blocks of the ViT are assumed to be spatially coherent nodes as in standard CNN models. This is convenient as they generally have the same dimensionality as the input patches, here 16x16. This means that instead of backpropagating toward a convolutional layer GradCAM backpropagates toward a late multi-head attention block. This results in a 16x16 explanation map after taking the mean of the channels, where channels here are not RGB channels as in CNN but the embedded dimension of the tokens. These explanations are then upsampled to the original image's size. For a more detailed description of how this is implemented, see \citet{gradcam-vit}. 
+
+% This is a claim, and needs! to be founded on something. We should be clear that we propose this explanation for why pure GradCAM does not work.
+ViT models process information from pixels differently from CNNs. While CNNs inherently have a spatial connection between input pixels and activations, enforced by limited filter sizes, \footnote{Filter sizes in CNNs are usually not larger than $7\times 7$, therefore the spatial distance between the two pixels influencing an activation can at most be $7$.} this spatial relation is not enforced in ViTs. The self-attention module in ViT allows them to attend to and be influenced by patches, or tokens, regardless of distance. It has been shown that contrary to CNNs, ViT models attend to pixels regardless of distance from the first layer~\cite{visual-transformer}. For evaluating this we use the model implemented in \texttt{PyTorch}\footnote{See, using the default weights, \href{https://pytorch.org/vision/main/models/generated/torchvision.models.vit_b_16.html}{https://pytorch.org/vision/main/models/generated/torchvision.models.vit\_b\_16.html}.} and fine-tune it on the Food-101 dataset \citep{food101}. Initial attempts were also made without fine-tuning evaluating on ImageNet, as can be seen in Appendix \ref{app:add_res}, although these results are less clear as the dataset is not as fine-grained.
+
+We get qualitatively worse results compared to CNNs, with most explanations generating nonsense results that do not seem to be correlated to the image. We believe that this is mostly due to the weaker spatial relationship between token-wise representations and that the method for upscaling patches, or activations, in later layers, to input image does not adequately represent pixel importance in ViTs. The alternative method of Gradient-weighted Attention Rollout is considered in Section \ref{sec:gradient-weighted-attention-rollout} as a partial solution to the spatial mixing problem.
+
+% Due to the mixing of information during self-attention, most explanation maps produce qualitatively much worse results than for CNNs, not highlighting the key parts of the image, and the assumption of multi-head attention blocks being spatially coherent does not hold. 
+
+A few examples of good explanation maps can be found in Figure \ref{fig:vit-gradcam-new-a} but these are rare and selected from the multi-head attention blocks that for those images gave spatially coherent results which can vary between images. We find that the contrastive explanation does affect the results, giving more detail in the highlights as can be seen in the pad thai and rice example in Figure \ref{fig:vit-gradcam-new-a}. 
+
+
+% OLD:
+% Due to the mixing of information during self-attention, most explanation maps produce qualitatively much worse results than for CNNs, not highlighting the key parts of the image, and the assumption of multi-head attention blocks being spatially coherent does not hold. A few examples of acceptable explanation maps can be found in Figure \ref{fig:vit-gradcam} but these are rare and selected from the multi-head attention blocks that for those images gave spatially coherent results, which can vary between images. 
+
+
+% This is especially obvious for examples where there are two or three dominating classes. In examples with many probable classes, such as the sushi and ramen example, the difference between
+
+% We also observe that the explanation of the dominating class often dominates the explanation. If images are not selected to have similar probabilities for the top elements then there is usually no visual difference between doing a softmax GradCAM and a standard GradCAM without ReLU. A small impact can be noted in the contrastive explanation though where the negative areas tend to be more precise and not solely background.
+
+
+\subsection{Vision Transformer: Contrastive Gradient-weighted Attention Rollout} \label{sec:gradient-weighted-attention-rollout}
+
+To alleviate the problem of hard-to-find proper explanations due to less enforced spatial coherence, explanations through attention rollout are attempted. Attention rollout as an explanation method for ViT was proposed in \citet{visual-transformer}, with the theory laid out in \citet{Quantifying-Attention-Flow}. With attention rollout, information flow is quantified by backtracking the attention from the desired layer to the input layer by multiplying the attention matrices. This partially restores the information flow between tokens and patches in ViT. % Here, attention is propagated throughout the network from layer to layer toward the input neurons by multiplying the attention matrices. 
+This method has later been further developed in order to weight explanations with regard to their gradients \citep{blog-grad-rollout, Chefer2020Dec}, similar to GradCAM.
+
+The gradient-weighted attention rollout explanation is constructed from the gradient-weighted attentions of each layer, defined as the mean over the attention heads of the gradient with regard to the target logit elementwise multiplied with the attention activation. These gradient-weighted attentions are then propagated down towards the input by multiplying these matricies together.\footnote{Gradient-weighted attention rollout has been implemented in \url{https://github.com/jacobgil/vit-explain/blob/main/vit_grad_rollout.py}}
+
+This explanation is significantly more accurate to the perceived localization of the image. For example, one can clearly see in Figure \ref{fig:vit-gradcam-new-b} that the method highlights rice and noodles for the different classes respectively. The weighted contrastive method with regard to the softmax further shows an even more detailed explanation. This is especially obvious when the dominating classes are of similar probability as in the pad thai and rice example shown in Figure \ref{fig:vit-gradcam-new-b}. In other cases, such as in the sushi and ramen example, where there is one dominating class but many probable classes with $p_t\approx0.05$ the weighted contrastive version is similar to the normal version. Overall this shows that a ViT implementation of the proposed contrastive weighted method is possible and relatively easy to implement, thus strengthening generalizability and Claim 3.
+
+\input{Sections/Tables/vit_table_new}
+% \input{Sections/Tables/vit_gradcam_table-2.tex}
+

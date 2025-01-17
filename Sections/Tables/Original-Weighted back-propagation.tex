@@ -1,0 +1,104 @@
+\begin{figure}[t]
+%\scriptsize
+\small
+\centering
+\resizebox{\textwidth}{!}{\
+\begin{tabular}
+{ l l c@{\hspace{0.1cm}} c@{\hspace{0.3cm}} c@{\hspace{0.1cm}} c@{\hspace{0.3cm}} c@{\hspace{0.1cm}} c@{\hspace{0.3cm}} c@{\hspace{0.1cm}} c@{\hspace{0.3cm}}}
+
+\toprule
+    \multicolumn{2}{l}{\rotatebox[origin=c]{90}{Input}} &
+    \multicolumn{2}{c}{$\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/input.png}}}$} &
+    \multicolumn{2}{c}{$\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/input.png}}}$} &
+    \multicolumn{2}{c}{$\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/input.png}}}$} &
+    \multicolumn{2}{c}{$\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/116_true_3/input.png}}}$} 
+        \vspace{0.1cm}
+\\
+
+    &
+    &
+    $t_1$ &
+    $t_2$ &
+    $t_1$ &
+    $t_2$ &
+    $t_1$ &
+    $t_2$ &
+    $t_1$ &
+    $t_2$ \\
+
+\midrule
+    \vspace{0.1cm}
+    \multirow{2}{*}{\rotatebox[origin=c]{90}{GradCAM }} &
+    \rotatebox[origin=c]{90}{Original} &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/gradcam_GC_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/gradcam_GC_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/gradcam_GC_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/gradcam_GC_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/gradcam_GC_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/gradcam_GC_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/116_true_3/gradcam_GC_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/116_true_3/gradcam_GC_t2.png}}}$ \\%[1cm]
+    
+    &
+    \rotatebox[origin=c]{90}{Weighted} &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/contrastive_gradcam_GC_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/contrastive_gradcam_GC_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/contrastive_gradcam_GC_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/contrastive_gradcam_GC_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/contrastive_gradcam_GC_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/contrastive_gradcam_GC_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/116_true_3/contrastive_gradcam_GC_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/116_true_3/contrastive_gradcam_GC_t2.png}}}$ \\
+
+\midrule
+    \vspace{0.1cm}
+    \multirow{2}{*}{\rotatebox[origin=c]{90}{\shortstack{Linear \\ Approximation}}} &
+    \rotatebox[origin=c]{90}{Original} &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/gradcam_LA_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/gradcam_LA_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/gradcam_LA_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/gradcam_LA_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/gradcam_LA_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/gradcam_LA_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/116_true_3/gradcam_LA_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/116_true_3/gradcam_LA_t2.png}}}$ \\
+    
+     &
+    \rotatebox[origin=c]{90}{Weighted} &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/contrastive_gradcam_LA_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/contrastive_gradcam_LA_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/contrastive_gradcam_LA_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/contrastive_gradcam_LA_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/contrastive_gradcam_LA_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/contrastive_gradcam_LA_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/116_true_3/contrastive_gradcam_LA_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/116_true_3/contrastive_gradcam_LA_t2.png}}}$ \\
+
+\midrule
+    \vspace{0.1cm}
+    \multirow{2}{*}{\rotatebox[origin=c]{90}{\shortstack{XGradCAM }}} &
+    \rotatebox[origin=c]{90}{Original} &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/gradcam_XC_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/gradcam_XC_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/gradcam_XC_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/gradcam_XC_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/gradcam_XC_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/gradcam_XC_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/116_true_3/gradcam_XC_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/116_true_3/gradcam_XC_t2.png}}}$ \\
+    
+     &
+    \rotatebox[origin=c]{90}{Weighted} &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/contrastive_gradcam_XC_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/2_true_0/contrastive_gradcam_XC_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/contrastive_gradcam_XC_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/51_true_1/contrastive_gradcam_XC_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/contrastive_gradcam_XC_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/85_true_2/contrastive_gradcam_XC_t2.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/116_true_3/contrastive_gradcam_XC_t1.png}}}$ &
+    $\vcenter{\hbox{\includegraphics[width = 0.1\textwidth]{figures/Figure 4/116_true_3/contrastive_gradcam_XC_t2.png}}}$ \\
+\bottomrule
+\end{tabular} }
+\caption{Reproduction of Figure 4 in the original paper. Comparison between the back-propagation from logits $y_t$ (Original) and weighted contrastive
+back-propagation from $p_t$ (Weighted) for GradCAM, Linear Approximation, and XGradCAM. The columns for each image signify the most possible and second possible class, respectively. Red and blue signal positive and negative activations respectively.} \label{fig:original_weighted_comp}
+\end{figure}
